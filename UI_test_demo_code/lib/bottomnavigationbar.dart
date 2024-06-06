@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:demo/Pages/Favorite.dart';
 import 'package:demo/Pages/Search.dart';
 import 'package:demo/Pages/profile.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 
 import 'Pages/Home.dart';
 import 'Pages/chat.dart';
@@ -15,7 +16,9 @@ class bottomnavigationbar extends StatefulWidget {
   State<bottomnavigationbar> createState() => _bottomnavigationbarState();
 }
 
-class _bottomnavigationbarState extends State<bottomnavigationbar> {
+class _bottomnavigationbarState extends State<bottomnavigationbar>  with TickerProviderStateMixin {
+  AnimationController? _controller;
+  List<AnimationInfo> _animationInfo = [];
   int _SelectedTab = 2;
   List navibarpages = [MapWidget(),chat(),HomePageWidget(),Favorite(),profile()];
   List Icons = [
@@ -26,6 +29,28 @@ class _bottomnavigationbarState extends State<bottomnavigationbar> {
     "assets/user.png",
   ];
 
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _controller = AnimationController(vsync: this); // Initialize animation information with effects
+    _animationInfo.addAll([
+      AnimationInfo(
+        effectsBuilder: () => [
+          VisibilityEffect(duration: 1000.ms),
+          MoveEffect(
+            curve: Curves.easeInOut,
+            delay: 1000.0.ms,
+            duration: 1500.0.ms,
+            begin: Offset(30.0, 1200),
+            end: Offset(0.0,0.0),
+          ),
+        ],
+        controller: _controller!,
+      )
+    ]);
+
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -62,13 +87,13 @@ class _bottomnavigationbarState extends State<bottomnavigationbar> {
                             shape: BoxShape.circle,
                             color: _SelectedTab == index? Color(0xFFFC9E12) : Colors.black,
                           ),
-                          padding: EdgeInsets.all(10),
+                          padding: EdgeInsets.all(13),
                           clipBehavior: Clip.antiAlias,
                           child: Image.asset(
                               Icons[index],
                             color:AppColor.white,
-                            width: 25,
-                            height: 25,
+                            width: 20,
+                            height: 20,
                           ),
                         ),
                       ),
@@ -76,7 +101,7 @@ class _bottomnavigationbarState extends State<bottomnavigationbar> {
                 ),
               ),
 
-            )
+            ).animateOnPageLoad(_animationInfo!.first)
           ],
         ),
       ),

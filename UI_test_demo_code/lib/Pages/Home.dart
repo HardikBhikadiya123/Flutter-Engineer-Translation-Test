@@ -45,7 +45,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
           MoveEffect(
             curve: Curves.easeInOut,
             delay: 450.0.ms,
-            duration: 1000.0.ms,
+            duration: 2000.0.ms,
             begin: Offset(-500.0, 0),
             end: Offset(0.0, 1.0),
           ),
@@ -53,12 +53,12 @@ class _HomePageWidgetState extends State<HomePageWidget>
         controller: _controller!,
       ),AnimationInfo(
         effectsBuilder: () => [
-          VisibilityEffect(duration: 10.ms),
+          VisibilityEffect(duration: 100.ms),
           MoveEffect(
             curve: Curves.easeInOut,
             delay: 100.0.ms,
-            duration: 1350.0.ms,
-            begin: Offset(0.0, 1200),
+            duration: 2000.0.ms,
+            begin: Offset(30.0, 1200),
             end: Offset(0.0,0.0),
           ),
         ],

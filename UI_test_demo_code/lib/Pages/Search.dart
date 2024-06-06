@@ -19,6 +19,19 @@ class _MapWidgetState extends State<MapWidget> {
       Completer<GoogleMapController>();
   TextEditingController searchController = TextEditingController();
   bool openpopup = false;
+  String selected = "Casy";
+  List<String> popitems = [
+    "Cosy areas",
+    "Price",
+    "Infrastructure",
+    "Without any layer"
+  ];
+  List<String> popitemsImages = [
+    "assets/verified.png",
+    "assets/wallet.png",
+    "assets/shopping-basket.png",
+    "assets/layers.png"
+  ];
   Set<Marker> _markers = {};
   final Placename = [
     "San Francisco",
@@ -47,17 +60,15 @@ class _MapWidgetState extends State<MapWidget> {
 
   void _setMarkers() {
     for (int i = 0; i < places.length; i++) {
-      _markers.addLabelMarker(
-          LabelMarker(
-            label: Placename[i].toString(),
-            markerId: MarkerId(i.toString()),
-            position: places[i],
-            backgroundColor: Colors.orange,
-            flat: true
-          )
-      ).then((value) => setState(() {}));
+      _markers
+          .addLabelMarker(LabelMarker(
+              label: Placename[i].toString(),
+              markerId: MarkerId(i.toString()),
+              position: places[i],
+              backgroundColor: Colors.orange,
+              flat: true))
+          .then((value) => setState(() {}));
     }
-
   }
 
   @override
@@ -69,7 +80,6 @@ class _MapWidgetState extends State<MapWidget> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       body: SafeArea(
         child: Stack(
@@ -149,13 +159,14 @@ class _MapWidgetState extends State<MapWidget> {
                             color: AppColor.primaryBackground,
                             shape: BoxShape.circle,
                           ),
-                          child: Image.asset("assets/filter.png",width: 18),
+                          padding: EdgeInsets.all(13),
+                          child: Image.asset("assets/filter.png", width: 18),
                         ),
                       ],
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.only(left: 50, right: 50, bottom: 100),
+                    padding: EdgeInsets.only(left: 50, right: 50, bottom: 120),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -168,36 +179,82 @@ class _MapWidgetState extends State<MapWidget> {
                             decoration: BoxDecoration(shape: BoxShape.circle),
                             padding: EdgeInsets.all(15),
                             clipBehavior: Clip.antiAlias,
-                            child:Image.asset("assets/database.png",color: AppColor.white,width: 15,),
+                            child: Image.asset(
+                              "assets/database.png",
+                              color: AppColor.white,
+                              width: 20,
+                            ),
                           ),
                           overlay: Container(
                             decoration: BoxDecoration(shape: BoxShape.circle),
                             padding: EdgeInsets.all(15),
                             clipBehavior: Clip.antiAlias,
-                            child: Image.asset("assets/database.png",color: AppColor.white,width: 15),
+                            child: Image.asset("assets/database.png",
+                                color: AppColor.white, width: 25),
                           ),
                         ),
                         SizedBox(height: 20),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Blur(
-                              blur: 5,
-                              borderRadius: BorderRadius.circular(50),
-                              blurColor: Colors.grey,
-                              child: Container(
-                                decoration:
-                                    BoxDecoration(shape: BoxShape.circle),
-                                padding: EdgeInsets.all(15),
-                                clipBehavior: Clip.antiAlias,
-                                child:  Image.asset("assets/send.png",color: AppColor.white,width: 15),
+                            PopupMenuButton<String>(
+                              onSelected: (String result) {
+                                setState(() {
+                                  selected = result;
+                                });
+                              },
+                              elevation: 0,
+                              color: Color(0xFFFBF5EB),
+                              padding: EdgeInsets.all(15),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15),
                               ),
-                              overlay: Container(
-                                decoration:
-                                    BoxDecoration(shape: BoxShape.circle),
-                                padding: EdgeInsets.all(15),
-                                clipBehavior: Clip.antiAlias,
-                                child:  Image.asset("assets/send.png",color: AppColor.white,width: 20),
+                              offset: Offset(0,-220),
+                              itemBuilder: (BuildContext context) =>
+                                  List.generate(
+                                popitems.length,
+                                (index) => PopupMenuItem<String>(
+                                  value: popitems[index],
+                                  child: Row(
+                                    children: [
+                                      Image.asset(popitemsImages[index],
+                                          color: selected ==  popitems[index]
+                                              ? AppColor.primary
+                                              : AppColor.secondaryTextColor,
+                                          width:23),
+                                      SizedBox(width: 15),
+                                      Text(
+                                        popitems[index],
+                                        style: TextStyle(
+                                            color: selected ==  popitems[index]
+                                                ? AppColor.primary
+                                                : AppColor.secondaryTextColor,
+                                            fontSize: 17,fontWeight: FontWeight.w400),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              child: Blur(
+                                blur: 5,
+                                borderRadius: BorderRadius.circular(50),
+                                blurColor: Colors.grey,
+                                child: Container(
+                                  decoration:
+                                      BoxDecoration(shape: BoxShape.circle),
+                                  padding: EdgeInsets.all(15),
+                                  clipBehavior: Clip.antiAlias,
+                                  child: Image.asset("assets/send.png",
+                                      color: AppColor.white, width: 25),
+                                ),
+                                overlay: Container(
+                                  decoration:
+                                      BoxDecoration(shape: BoxShape.circle),
+                                  padding: EdgeInsets.all(15),
+                                  clipBehavior: Clip.antiAlias,
+                                  child: Image.asset("assets/send.png",
+                                      color: AppColor.white, width: 25),
+                                ),
                               ),
                             ),
                             Blur(

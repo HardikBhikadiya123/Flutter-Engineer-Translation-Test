@@ -1,0 +1,1 @@
+ D:\\projects\\Github_project\\Hardikbhai_github\\Flutter-Engineer-Translation-Test\\UI_test_demo_code\\.dart_tool\\flutter_build\\c4306f2896477dedf46dc947c5249628\\native_assets.yaml: 

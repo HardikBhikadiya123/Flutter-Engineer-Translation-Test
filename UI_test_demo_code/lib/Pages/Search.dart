@@ -18,9 +18,11 @@ class MapWidget extends StatefulWidget {
   State<MapWidget> createState() => _MapWidgetState();
 }
 
-class _MapWidgetState extends State<MapWidget> {
+class _MapWidgetState extends State<MapWidget>  with TickerProviderStateMixin{
   final Completer<GoogleMapController> _controller =
       Completer<GoogleMapController>();
+  AnimationController? _controlleranimaiton;
+  AnimationInfo? _animationInfo;
   TextEditingController searchController = TextEditingController();
   bool openpopup = false;
   String selected = "Casy";
@@ -83,7 +85,21 @@ class _MapWidgetState extends State<MapWidget> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    _setMarkers(false);
+    _setMarkers(true);
+    _controlleranimaiton = AnimationController(vsync: this);
+    _animationInfo = AnimationInfo(
+      effectsBuilder: () => [
+        VisibilityEffect(duration: 100.ms),
+        FadeEffect(
+          curve: Curves.easeInCirc,
+          delay: 100.ms,
+          duration: 2000.ms,
+          begin: 0.0,
+          end: 1.0,
+        ),
+      ],
+      controller: _controlleranimaiton!,
+    );
   }
 
   @override
@@ -173,7 +189,7 @@ class _MapWidgetState extends State<MapWidget> {
                         ),
                       ],
                     ),
-                  ),
+                  ).animateOnPageLoad(_animationInfo!),
                   Padding(
                     padding: EdgeInsets.only(left: 50, right: 50, bottom: 120),
                     child: Column(
@@ -182,7 +198,7 @@ class _MapWidgetState extends State<MapWidget> {
                       children: [
                         InkWell(
                           onTap: () {
-                            _setMarkers(false);
+                            _setMarkers(true);
                           },
                           child: Blur(
                             blur: 5,
@@ -206,7 +222,7 @@ class _MapWidgetState extends State<MapWidget> {
                                   color: AppColor.white, width: 25),
                             ),
                           ),
-                        ),
+                        ).animateOnPageLoad(_animationInfo!),
                         SizedBox(height: 20),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -218,7 +234,7 @@ class _MapWidgetState extends State<MapWidget> {
                                 });
                               },
                               onOpened: () {
-                                _setMarkers(true);
+                                _setMarkers(false);
                                 // _controller.;
                               },
                               elevation: 0,
@@ -275,7 +291,7 @@ class _MapWidgetState extends State<MapWidget> {
                                       color: AppColor.white, width: 25),
                                 ),
                               ),
-                            ),
+                            ).animateOnPageLoad(_animationInfo!),
                             Blur(
                               blur: 5,
                               borderRadius: BorderRadius.circular(50),
@@ -326,7 +342,7 @@ class _MapWidgetState extends State<MapWidget> {
                                   ),
                                 ),
                               ),
-                            ),
+                            ).animateOnPageLoad(_animationInfo!),
                           ],
                         )
                       ],

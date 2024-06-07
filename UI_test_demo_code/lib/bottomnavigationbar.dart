@@ -86,7 +86,7 @@ class _bottomnavigationbarState extends State<bottomnavigationbar>  with TickerP
                           height: 45,
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
-                            color: _SelectedTab == index? Color(0xFFFC9E12) : Colors.black,
+                            color: _SelectedTab == index? AppColor.primary : AppColor.black,
                           ),
                           padding: EdgeInsets.all(13),
                           clipBehavior: Clip.antiAlias,

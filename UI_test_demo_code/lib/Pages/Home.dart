@@ -5,6 +5,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 
+import 'animation.dart';
+
 // import 'package:flutter_animate/flutter_animate.dart';
 // import 'package:google_fonts/google_fonts.dart';
 // import 'package:provider/provider.dart';
@@ -77,9 +79,12 @@ class _HomePageWidgetState extends State<HomePageWidget>
   }
 
   Widget items({required double height}) {
+
     return Container(
       width: double.infinity,
       height: height,
+      decoration: BoxDecoration(),
+      clipBehavior: Clip.antiAlias,
       child: Stack(
         children: [
           Stack(
@@ -104,7 +109,9 @@ class _HomePageWidgetState extends State<HomePageWidget>
                     overlay: Container(
                       width: double.infinity,
                       height: 45,
-                      padding: EdgeInsets.only(left: 8),
+                      margin: EdgeInsets.only(left: 8),
+                      decoration: BoxDecoration(),
+                      clipBehavior: Clip.antiAlias,
                       child: Row(
                         children: [
                           Expanded(
@@ -125,9 +132,11 @@ class _HomePageWidgetState extends State<HomePageWidget>
                         ],
                       ),
                     ),
-                    child: SizedBox(
+                    child: Container(
                       width: double.infinity,
                       height: 45,
+                      decoration: BoxDecoration(),
+                      clipBehavior: Clip.antiAlias,
                     ),
                   ),
                 ),
@@ -536,6 +545,7 @@ class _calculateNumbersState extends State<calculateNumbers> {
 
   @override
   Widget build(BuildContext context) {
+
     return Text("2 $values",
         style: TextStyle(
           fontFamily: 'Poppins',
@@ -544,37 +554,5 @@ class _calculateNumbersState extends State<calculateNumbers> {
           letterSpacing: 0,
           fontWeight: FontWeight.w500,
         ));
-  }
-}
-
-class AnimationInfo {
-  AnimationInfo({
-    required this.effectsBuilder,
-    required this.controller,
-  });
-
-  final List<Effect> Function() effectsBuilder;
-  final AnimationController controller;
-  List<Effect>? _effects; // Get effects or create them using the builder
-  List<Effect> get effects =>
-      _effects ??= effectsBuilder(); // Update effects if new ones are provided
-  void maybeUpdateEffects(List<Effect>? updatedEffects) {
-    if (updatedEffects != null) {
-      _effects = updatedEffects;
-    }
-  }
-} // Extension to add animation capabilities to any
-
-extension AnimatedWidgetExtension on Widget {
-  Widget animateOnPageLoad(
-    AnimationInfo animationInfo, {
-    List<Effect>? effects,
-  }) {
-    // Update effects if new ones are provided
-    animationInfo.maybeUpdateEffects(effects);
-    return Animate(
-      effects: animationInfo.effects,
-      child: this,
-    );
   }
 }

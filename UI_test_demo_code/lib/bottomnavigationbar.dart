@@ -7,6 +7,7 @@ import 'package:demo/Pages/profile.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 
 import 'Pages/Home.dart';
+import 'Pages/animation.dart';
 import 'Pages/chat.dart';
 
 class bottomnavigationbar extends StatefulWidget {

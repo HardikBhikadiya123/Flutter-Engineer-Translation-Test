@@ -1,11 +1,15 @@
 import 'dart:async';
-
+import 'package:demo/Pages/animation.dart';
 import 'package:blur/blur.dart';
 import 'package:demo/Theme/colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:label_marker/label_marker.dart';
+import 'package:widget_to_marker/widget_to_marker.dart';
+
+import 'animation.dart';
 
 class MapWidget extends StatefulWidget {
   const MapWidget({super.key});
@@ -34,16 +38,16 @@ class _MapWidgetState extends State<MapWidget> {
   ];
   Set<Marker> _markers = {};
   final Placename = [
-    "San Francisco",
-    "Los Angeles",
-    "New Yor",
-    "London",
-    "Paris",
-    "Tokyo",
-    "Moscow",
-    "Sydney",
-    "Beijing",
-    "New Delhi",
+    "11,3 mm p",
+    "8,5 mm p",
+    "11,8 mm p",
+    "5,9 mm p",
+    "8,7 mm p",
+    "25,3 mm p",
+    "18,1 mm p",
+    "4,8 mm p",
+    "18,7 mm p",
+    "5,9 mm p",
   ];
   final List<LatLng> places = [
     LatLng(37.7749, -122.4194),
@@ -58,16 +62,20 @@ class _MapWidgetState extends State<MapWidget> {
     LatLng(28.6139, 77.2090),
   ];
 
-  void _setMarkers() {
+  Future<void> _setMarkers(bool showmarkerDetail) async {
     for (int i = 0; i < places.length; i++) {
-      _markers
-          .addLabelMarker(LabelMarker(
-              label: Placename[i].toString(),
-              markerId: MarkerId(i.toString()),
-              position: places[i],
-              backgroundColor: Colors.orange,
-              flat: true))
-          .then((value) => setState(() {}));
+      _markers.add(Marker(
+        markerId: MarkerId(i.toString()),
+        position: places[i],
+        icon: await TextOnImage(
+          text: Placename[i],
+          showmarkerDetail: showmarkerDetail,
+          id: i.toString(),
+        ).toBitmapDescriptor(
+            logicalSize: !showmarkerDetail ? Size(80, 80) : Size(150, 80),
+            imageSize: !showmarkerDetail ? Size(80, 80) : Size(150, 80)),
+      ));
+      setState(() {});
     }
   }
 
@@ -75,7 +83,7 @@ class _MapWidgetState extends State<MapWidget> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    _setMarkers();
+    _setMarkers(false);
   }
 
   @override
@@ -89,6 +97,7 @@ class _MapWidgetState extends State<MapWidget> {
                   target: places.first,
                   zoom: 0,
                 ),
+                mapType: MapType.normal,
                 markers: _markers,
                 onMapCreated: (GoogleMapController controller) {
                   _controller.complete(controller);
@@ -171,26 +180,31 @@ class _MapWidgetState extends State<MapWidget> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Blur(
-                          blur: 5,
-                          borderRadius: BorderRadius.circular(50),
-                          blurColor: Colors.grey,
-                          child: Container(
-                            decoration: BoxDecoration(shape: BoxShape.circle),
-                            padding: EdgeInsets.all(15),
-                            clipBehavior: Clip.antiAlias,
-                            child: Image.asset(
-                              "assets/database.png",
-                              color: AppColor.white,
-                              width: 20,
+                        InkWell(
+                          onTap: () {
+                            _setMarkers(false);
+                          },
+                          child: Blur(
+                            blur: 5,
+                            borderRadius: BorderRadius.circular(50),
+                            blurColor: Colors.grey,
+                            child: Container(
+                              decoration: BoxDecoration(shape: BoxShape.circle),
+                              padding: EdgeInsets.all(15),
+                              clipBehavior: Clip.antiAlias,
+                              child: Image.asset(
+                                "assets/database.png",
+                                color: AppColor.white,
+                                width: 20,
+                              ),
                             ),
-                          ),
-                          overlay: Container(
-                            decoration: BoxDecoration(shape: BoxShape.circle),
-                            padding: EdgeInsets.all(15),
-                            clipBehavior: Clip.antiAlias,
-                            child: Image.asset("assets/database.png",
-                                color: AppColor.white, width: 25),
+                            overlay: Container(
+                              decoration: BoxDecoration(shape: BoxShape.circle),
+                              padding: EdgeInsets.all(15),
+                              clipBehavior: Clip.antiAlias,
+                              child: Image.asset("assets/database.png",
+                                  color: AppColor.white, width: 25),
+                            ),
                           ),
                         ),
                         SizedBox(height: 20),
@@ -203,13 +217,17 @@ class _MapWidgetState extends State<MapWidget> {
                                   selected = result;
                                 });
                               },
+                              onOpened: () {
+                                _setMarkers(true);
+                                // _controller.;
+                              },
                               elevation: 0,
                               color: Color(0xFFFBF5EB),
                               padding: EdgeInsets.all(15),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(15),
                               ),
-                              offset: Offset(0,-220),
+                              offset: Offset(0, -220),
                               itemBuilder: (BuildContext context) =>
                                   List.generate(
                                 popitems.length,
@@ -218,18 +236,19 @@ class _MapWidgetState extends State<MapWidget> {
                                   child: Row(
                                     children: [
                                       Image.asset(popitemsImages[index],
-                                          color: selected ==  popitems[index]
+                                          color: selected == popitems[index]
                                               ? AppColor.primary
                                               : AppColor.secondaryTextColor,
-                                          width:23),
+                                          width: 23),
                                       SizedBox(width: 15),
                                       Text(
                                         popitems[index],
                                         style: TextStyle(
-                                            color: selected ==  popitems[index]
+                                            color: selected == popitems[index]
                                                 ? AppColor.primary
                                                 : AppColor.secondaryTextColor,
-                                            fontSize: 17,fontWeight: FontWeight.w400),
+                                            fontSize: 17,
+                                            fontWeight: FontWeight.w400),
                                       ),
                                     ],
                                   ),
@@ -319,6 +338,53 @@ class _MapWidgetState extends State<MapWidget> {
           ],
         ),
       ),
+    );
+  }
+}
+
+class TextOnImage extends StatefulWidget {
+  final String text;
+  final String id;
+  final bool showmarkerDetail;
+
+  const TextOnImage(
+      {super.key,
+      required this.text,
+      required this.showmarkerDetail,
+      required this.id});
+
+  @override
+  State<TextOnImage> createState() => _TextOnImageState();
+}
+
+class _TextOnImageState extends State<TextOnImage> {
+  String selected = '';
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: !widget.showmarkerDetail || selected == widget.id ? 80 : 150,
+      height: 80,
+      alignment: Alignment.center,
+      decoration: BoxDecoration(
+          color: AppColor.primary,
+          borderRadius: BorderRadius.only(
+              topRight: Radius.circular(20),
+              topLeft: Radius.circular(20),
+              bottomRight: Radius.circular(20))),
+      padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+      clipBehavior: Clip.antiAlias,
+      child: widget.showmarkerDetail
+          ? Text(widget.text,
+              style: TextStyle(color: AppColor.white, fontSize: 25))
+          : Icon(CupertinoIcons.building_2_fill,
+              color: AppColor.white, size: 30),
     );
   }
 }

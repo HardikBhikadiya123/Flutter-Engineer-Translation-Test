@@ -278,13 +278,19 @@
       "languageVersion": "3.2"
     },
     {
+      "name": "widget_to_marker",
+      "rootUri": "file:///C:/Users/Savan%20Ambaliya/AppData/Local/Pub/Cache/hosted/pub.dev/widget_to_marker-1.0.4",
+      "packageUri": "lib/",
+      "languageVersion": "2.19"
+    },
+    {
       "name": "demo",
       "rootUri": "../",
       "packageUri": "lib/",
       "languageVersion": "3.2"
     }
   ],
-  "generated": "2024-06-06T17:37:17.362253Z",
+  "generated": "2024-06-07T16:19:29.005787Z",
   "generator": "pub",
   "generatorVersion": "3.2.6"
 }

@@ -42,6 +42,7 @@ dependencies:
   google_maps_flutter:
   flutter_animate:
   label_marker:
+  widget_to_marker:
 
 dev_dependencies:
   flutter_test:

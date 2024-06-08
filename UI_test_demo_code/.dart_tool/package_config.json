@@ -206,12 +206,6 @@
       "languageVersion": "2.12"
     },
     {
-      "name": "label_marker",
-      "rootUri": "file:///C:/Users/Savan%20Ambaliya/AppData/Local/Pub/Cache/hosted/pub.dev/label_marker-1.0.1",
-      "packageUri": "lib/",
-      "languageVersion": "2.16"
-    },
-    {
       "name": "lints",
       "rootUri": "file:///C:/Users/Savan%20Ambaliya/AppData/Local/Pub/Cache/hosted/pub.dev/lints-2.1.1",
       "packageUri": "lib/",
@@ -326,7 +320,7 @@
       "languageVersion": "3.2"
     }
   ],
-  "generated": "2024-06-08T12:47:35.486964Z",
+  "generated": "2024-06-08T13:27:55.457040Z",
   "generator": "pub",
   "generatorVersion": "3.2.6"
 }

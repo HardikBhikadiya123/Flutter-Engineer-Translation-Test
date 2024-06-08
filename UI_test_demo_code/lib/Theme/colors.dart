@@ -9,15 +9,3 @@ class AppColor{
   static Color black = Colors.black;
   static Color white = Colors.white;
 }
-
-
-// GoogleFonts.getFont(
-// fontFamily!,
-// color: color ?? this.color,
-// fontSize: fontSize ?? this.fontSize,
-// letterSpacing: letterSpacing ?? this.letterSpacing,
-// fontWeight: fontWeight ?? this.fontWeight,
-// fontStyle: fontStyle ?? this.fontStyle,
-// decoration: decoration,
-// height: lineHeight,
-// )

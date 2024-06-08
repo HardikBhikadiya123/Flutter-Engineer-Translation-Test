@@ -41,7 +41,6 @@ dependencies:
   dot_navigation_bar:
   google_maps_flutter:
   flutter_animate:
-  label_marker:
   widget_to_marker:
   flutter_keyboard_visibility:
 

@@ -5,6 +5,7 @@ import 'package:demo/Theme/colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:label_marker/label_marker.dart';
 import 'package:widget_to_marker/widget_to_marker.dart';
@@ -18,7 +19,7 @@ class MapWidget extends StatefulWidget {
   State<MapWidget> createState() => _MapWidgetState();
 }
 
-class _MapWidgetState extends State<MapWidget>  with TickerProviderStateMixin{
+class _MapWidgetState extends State<MapWidget> with TickerProviderStateMixin {
   final Completer<GoogleMapController> _controller =
       Completer<GoogleMapController>();
   AnimationController? _controlleranimaiton;
@@ -89,11 +90,11 @@ class _MapWidgetState extends State<MapWidget>  with TickerProviderStateMixin{
     _controlleranimaiton = AnimationController(vsync: this);
     _animationInfo = AnimationInfo(
       effectsBuilder: () => [
-        VisibilityEffect(duration: 100.ms),
+        VisibilityEffect(duration: 10.ms),
         FadeEffect(
           curve: Curves.easeInCirc,
-          delay: 100.ms,
-          duration: 2000.ms,
+          delay: 10.ms,
+          duration: 1300.ms,
           begin: 0.0,
           end: 1.0,
         ),
@@ -190,164 +191,189 @@ class _MapWidgetState extends State<MapWidget>  with TickerProviderStateMixin{
                       ],
                     ),
                   ).animateOnPageLoad(_animationInfo!),
-                  Padding(
-                    padding: EdgeInsets.only(left: 50, right: 50, bottom: 120),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        InkWell(
-                          onTap: () {
-                            _setMarkers(true);
-                          },
-                          child: Blur(
-                            blur: 5,
-                            borderRadius: BorderRadius.circular(50),
-                            blurColor: Colors.grey,
-                            child: Container(
-                              decoration: BoxDecoration(shape: BoxShape.circle),
-                              padding: EdgeInsets.all(15),
-                              clipBehavior: Clip.antiAlias,
-                              child: Image.asset(
-                                "assets/database.png",
-                                color: AppColor.white,
-                                width: 20,
-                              ),
-                            ),
-                            overlay: Container(
-                              decoration: BoxDecoration(shape: BoxShape.circle),
-                              padding: EdgeInsets.all(15),
-                              clipBehavior: Clip.antiAlias,
-                              child: Image.asset("assets/database.png",
-                                  color: AppColor.white, width: 25),
-                            ),
-                          ),
-                        ).animateOnPageLoad(_animationInfo!),
-                        SizedBox(height: 20),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            PopupMenuButton<String>(
-                              onSelected: (String result) {
-                                setState(() {
-                                  selected = result;
-                                });
-                              },
-                              onOpened: () {
-                                _setMarkers(false);
-                                // _controller.;
-                              },
-                              elevation: 0,
-                              color: Color(0xFFFBF5EB),
-                              padding: EdgeInsets.all(15),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(15),
-                              ),
-                              offset: Offset(0, -220),
-                              itemBuilder: (BuildContext context) =>
-                                  List.generate(
-                                popitems.length,
-                                (index) => PopupMenuItem<String>(
-                                  value: popitems[index],
-                                  child: Row(
-                                    children: [
-                                      Image.asset(popitemsImages[index],
-                                          color: selected == popitems[index]
-                                              ? AppColor.primary
-                                              : AppColor.secondaryTextColor,
-                                          width: 23),
-                                      SizedBox(width: 15),
-                                      Text(
-                                        popitems[index],
-                                        style: TextStyle(
-                                            color: selected == popitems[index]
-                                                ? AppColor.primary
-                                                : AppColor.secondaryTextColor,
-                                            fontSize: 17,
-                                            fontWeight: FontWeight.w400),
+                  KeyboardVisibilityBuilder(
+                      builder: (p0, isKeyboardVisible) => !isKeyboardVisible
+                          ? Padding(
+                              padding: EdgeInsets.only(
+                                  left: 50, right: 50, bottom: 120),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  InkWell(
+                                    onTap: () {
+                                      _setMarkers(true);
+                                    },
+                                    child: Blur(
+                                      blur: 5,
+                                      borderRadius: BorderRadius.circular(50),
+                                      blurColor: Colors.grey,
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                            shape: BoxShape.circle),
+                                        padding: EdgeInsets.all(15),
+                                        clipBehavior: Clip.antiAlias,
+                                        child: Image.asset(
+                                          "assets/database.png",
+                                          color: AppColor.white,
+                                          width: 20,
+                                        ),
                                       ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              child: Blur(
-                                blur: 5,
-                                borderRadius: BorderRadius.circular(50),
-                                blurColor: Colors.grey,
-                                child: Container(
-                                  decoration:
-                                      BoxDecoration(shape: BoxShape.circle),
-                                  padding: EdgeInsets.all(15),
-                                  clipBehavior: Clip.antiAlias,
-                                  child: Image.asset("assets/send.png",
-                                      color: AppColor.white, width: 25),
-                                ),
-                                overlay: Container(
-                                  decoration:
-                                      BoxDecoration(shape: BoxShape.circle),
-                                  padding: EdgeInsets.all(15),
-                                  clipBehavior: Clip.antiAlias,
-                                  child: Image.asset("assets/send.png",
-                                      color: AppColor.white, width: 25),
-                                ),
-                              ),
-                            ).animateOnPageLoad(_animationInfo!),
-                            Blur(
-                              blur: 5,
-                              borderRadius: BorderRadius.circular(50),
-                              blurColor: Colors.grey,
-                              child: InkWell(
-                                onTap: () {
-                                  setState(() {
-                                    openpopup = !openpopup;
-                                  });
-                                },
-                                child: Container(
-                                  height: 50,
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(50)),
-                                  padding: EdgeInsets.all(15),
-                                  clipBehavior: Clip.antiAlias,
-                                  child: Row(
+                                      overlay: Container(
+                                        decoration: BoxDecoration(
+                                            shape: BoxShape.circle),
+                                        padding: EdgeInsets.all(15),
+                                        clipBehavior: Clip.antiAlias,
+                                        child: Image.asset(
+                                            "assets/database.png",
+                                            color: AppColor.white,
+                                            width: 25),
+                                      ),
+                                    ),
+                                  ).animateOnPageLoad(_animationInfo!),
+                                  SizedBox(height: 20),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
-                                      Icon(Icons.list, color: AppColor.white),
-                                      SizedBox(width: 10),
-                                      Text("List of variants",
-                                          style:
-                                              TextStyle(color: AppColor.white))
+                                      PopupMenuButton<String>(
+                                        onSelected: (String result) {
+                                          setState(() {
+                                            selected = result;
+                                          });
+                                        },
+                                        onOpened: () {
+                                          _setMarkers(false);
+                                          // _controller.;
+                                        },
+                                        elevation: 0,
+                                        color: Color(0xFFFBF5EB),
+                                        padding: EdgeInsets.all(15),
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(15),
+                                        ),
+                                        offset: Offset(0, -220),
+                                        itemBuilder: (BuildContext context) =>
+                                            List.generate(
+                                          popitems.length,
+                                          (index) => PopupMenuItem<String>(
+                                            value: popitems[index],
+                                            child: Row(
+                                              children: [
+                                                Image.asset(
+                                                    popitemsImages[index],
+                                                    color: selected ==
+                                                            popitems[index]
+                                                        ? AppColor.primary
+                                                        : AppColor
+                                                            .secondaryTextColor,
+                                                    width: 23),
+                                                SizedBox(width: 15),
+                                                Text(
+                                                  popitems[index],
+                                                  style: TextStyle(
+                                                      color: selected ==
+                                                              popitems[index]
+                                                          ? AppColor.primary
+                                                          : AppColor
+                                                              .secondaryTextColor,
+                                                      fontSize: 17,
+                                                      fontWeight:
+                                                          FontWeight.w400),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                        child: Blur(
+                                          blur: 5,
+                                          borderRadius:
+                                              BorderRadius.circular(50),
+                                          blurColor: Colors.grey,
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                                shape: BoxShape.circle),
+                                            padding: EdgeInsets.all(15),
+                                            clipBehavior: Clip.antiAlias,
+                                            child: Image.asset(
+                                                "assets/send.png",
+                                                color: AppColor.white,
+                                                width: 25),
+                                          ),
+                                          overlay: Container(
+                                            decoration: BoxDecoration(
+                                                shape: BoxShape.circle),
+                                            padding: EdgeInsets.all(15),
+                                            clipBehavior: Clip.antiAlias,
+                                            child: Image.asset(
+                                                "assets/send.png",
+                                                color: AppColor.white,
+                                                width: 25),
+                                          ),
+                                        ),
+                                      ).animateOnPageLoad(_animationInfo!),
+                                      Blur(
+                                        blur: 5,
+                                        borderRadius: BorderRadius.circular(50),
+                                        blurColor: Colors.grey,
+                                        child: InkWell(
+                                          onTap: () {
+                                            setState(() {
+                                              openpopup = !openpopup;
+                                            });
+                                          },
+                                          child: Container(
+                                            height: 50,
+                                            decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(50)),
+                                            padding: EdgeInsets.all(15),
+                                            clipBehavior: Clip.antiAlias,
+                                            child: Row(
+                                              children: [
+                                                Icon(Icons.list,
+                                                    color: AppColor.white),
+                                                SizedBox(width: 10),
+                                                Text("List of variants",
+                                                    style: TextStyle(
+                                                        color: AppColor.white))
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                        overlay: InkWell(
+                                          onTap: () {
+                                            setState(() {
+                                              openpopup = !openpopup;
+                                            });
+                                          },
+                                          child: Container(
+                                            height: 50,
+                                            decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(50)),
+                                            padding: EdgeInsets.all(15),
+                                            clipBehavior: Clip.antiAlias,
+                                            child: Row(
+                                              children: [
+                                                Icon(Icons.list,
+                                                    color: AppColor.white),
+                                                SizedBox(width: 10),
+                                                Text("List of variants",
+                                                    style: TextStyle(
+                                                        color: AppColor.white))
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ).animateOnPageLoad(_animationInfo!),
                                     ],
-                                  ),
-                                ),
+                                  )
+                                ],
                               ),
-                              overlay: InkWell(
-                                onTap: () {
-                                  setState(() {
-                                    openpopup = !openpopup;
-                                  });
-                                },
-                                child: Container(
-                                  height: 50,
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(50)),
-                                  padding: EdgeInsets.all(15),
-                                  clipBehavior: Clip.antiAlias,
-                                  child: Row(
-                                    children: [
-                                      Icon(Icons.list, color: AppColor.white),
-                                      SizedBox(width: 10),
-                                      Text("List of variants",
-                                          style:
-                                              TextStyle(color: AppColor.white))
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ).animateOnPageLoad(_animationInfo!),
-                          ],
-                        )
-                      ],
-                    ),
-                  ),
+                            )
+                          : SizedBox.shrink()),
                 ],
               ),
             ),

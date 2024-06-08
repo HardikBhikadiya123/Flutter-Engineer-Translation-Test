@@ -283,7 +283,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                     ),
                                   ),
                                 ],
-                              )..animateOnPageLoad(_animationInfo!.first),
+                              ).animateOnPageLoad(_animationInfo!.first),
                               Row(
                                 mainAxisSize: MainAxisSize.max,
                                 crossAxisAlignment: CrossAxisAlignment.start,

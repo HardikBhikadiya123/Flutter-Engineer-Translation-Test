@@ -43,6 +43,7 @@ dependencies:
   flutter_animate:
   label_marker:
   widget_to_marker:
+  flutter_keyboard_visibility:
 
 dev_dependencies:
   flutter_test:
